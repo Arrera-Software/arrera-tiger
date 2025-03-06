@@ -1,5 +1,8 @@
+from CTigerUI import*
+
 def main():
-    pass
+    tiger = CTigerUI()
+    tiger.start()
 
 if __name__ == '__main__':
     main()
