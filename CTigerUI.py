@@ -7,17 +7,19 @@ class CTigerUI:
         self.__arrTk = CArreraTK()
         self.__objTiger = CArreraTiger("json/tigerConf.json")
         # Creation de la fenetre
-        self.__rootWin = self.__arrTk.aTK(width=800, height=600, title="Arrera Tiger", resizable=True)
+        self.__rootWin = self.__arrTk.aTK(width=800, height=600, title="Arrera Store", resizable=True)
         self.__rootWin.grid_rowconfigure(0, weight=1)
         self.__rootWin.grid_rowconfigure(1, weight=10)
         self.__rootWin.grid_columnconfigure(0, weight=1)
         # Ajout de differents frame
-        fTop = self.__arrTk.createFrame(self.__rootWin, bg="blue")
+        fTop = self.__arrTk.createFrame(self.__rootWin, bg="black")
         self.__fmain = self.__arrTk.createFrame(self.__rootWin,bg="red")
 
         # Widgets
         # FTop
-        labelTitle = self.__arrTk.createLabel(fTop, text="Arrera store", ptaille=25,pstyle="bolt",ppolice="Arial",justify="left")
+        labelTitle = self.__arrTk.createButton(fTop, text="Arrera store",
+                                              ptaille=25,pstyle="bolt",fg="black",
+                                              ppolice="Arial",bg="white")
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres")
         btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos")
