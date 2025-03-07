@@ -9,33 +9,55 @@ class CTigerUI:
         # Creation de la fenetre
         self.__rootWin = self.__arrTk.aTK(width=800, height=600, title="Arrera Store", resizable=True)
         self.__rootWin.grid_rowconfigure(0, weight=1)
-        self.__rootWin.grid_rowconfigure(1, weight=10)
         self.__rootWin.grid_columnconfigure(0, weight=1)
         # Ajout de differents frame
-        fTop = self.__arrTk.createFrame(self.__rootWin, bg="black")
-        self.__fmain = self.__arrTk.createFrame(self.__rootWin,bg="red")
+        self.__fmain = self.__arrTk.createFrame(self.__rootWin)
+        self.__fApp1 = self.__arrTk.createFrame(self.__fmain, bg="blue")
+        self.__fApp2 = self.__arrTk.createFrame(self.__fmain, bg="blue")
 
         # Widgets
         # FTop
-        labelTitle = self.__arrTk.createButton(fTop, text="Arrera store",
-                                              ptaille=25,pstyle="bolt",fg="black",
-                                              ppolice="Arial",bg="white")
+        labelTitle = self.__arrTk.createLabel(self.__fmain, text="Arrera store",
+                                              ptaille=25,pstyle="bolt",
+                                              ppolice="Arial")
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres")
         btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos")
 
+        # Configuration des colonnes et lignes
+        # fmain
+        self.__fmain.grid_columnconfigure(0, weight=1)
+        self.__fmain.grid_columnconfigure(1, weight=1)
+        self.__fmain.grid_columnconfigure(2, weight=1)
+        # fApp
+        self.__fApp1.grid_columnconfigure(0, weight=1)
+        self.__fApp1.grid_columnconfigure(1, weight=1)
+        self.__fApp1.grid_columnconfigure(2, weight=1)
+        self.__fApp1.grid_rowconfigure(0, weight=1)
+        self.__fApp1.grid_rowconfigure(1, weight=1)
+        self.__fApp1.grid_rowconfigure(2, weight=1)
+
+        self.__fApp2.grid_columnconfigure(0, weight=1)
+        self.__fApp2.grid_columnconfigure(1, weight=1)
+        self.__fApp2.grid_columnconfigure(2, weight=1)
+        self.__fApp2.grid_rowconfigure(0, weight=1)
+        self.__fApp2.grid_rowconfigure(1, weight=1)
+        self.__fApp2.grid_rowconfigure(2, weight=1)
+
+
         # Affichage
         # Fmain
-        fTop.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        labelTitle.grid(row=0, column=0, sticky="nw")
-        btnPara.grid(row=1, column=1, sticky="se")
+        self.__fApp1.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
+        self.__fApp2.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        labelTitle.grid(row=0, column=1, sticky="n")
+        btnPara.grid(row=1, column=2, sticky="se")
         btnApropos.grid(row=1, column=0, sticky="sw")
 
     def start(self):
         # Affichage de frame main
-        self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__fmain.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
         self.__fmain.grid_rowconfigure(0, weight=1)
-        self.__fmain.grid_columnconfigure(0, weight=1)
+
         # Affichage de la fenetre
         self.__arrTk.view()
 
