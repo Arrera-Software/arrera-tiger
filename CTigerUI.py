@@ -26,8 +26,13 @@ class CTigerUI:
                                               ppolice="Arial")
         self.__btnInstall = self.__arrTk.createButton(fTop, text="Application installer")
         # Fmain
-        btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres")
+        btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres",command=self.__activePara)
         btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos", command=self.__apropos)
+        # FPara
+        lableTitlePara = self.__arrTk.createLabel(self.__fPara, text="Parametre",
+                                                  ppolice="Arial",ptaille=25,pstyle="bold")
+        btnSetEmplacement = self.__arrTk.createButton(self.__fPara, text="Emplacement de application Arrera")
+        btnBackAcceuilPara = self.__arrTk.createButton(self.__fPara, text="Retour", command=self.__backMain)
 
         # Configuration des colonnes et lignes
         # fmain
@@ -52,6 +57,13 @@ class CTigerUI:
         fTop.grid_columnconfigure(0, weight=1)
         fTop.grid_columnconfigure(1, weight=1)
         fTop.grid_columnconfigure(2, weight=1)
+        # FPara
+        self.__fPara.grid_columnconfigure(0, weight=1)
+        self.__fPara.grid_columnconfigure(1, weight=10)
+        self.__fPara.grid_columnconfigure(2, weight=1)
+        self.__fPara.grid_rowconfigure(0, weight=1)
+        self.__fPara.grid_rowconfigure(1, weight=1)
+        self.__fPara.grid_rowconfigure(2, weight=1)
 
 
         # Affichage
@@ -64,6 +76,10 @@ class CTigerUI:
         # FTop
         labelTitle.grid(row=0, column=0, sticky="nw")
         self.__btnInstall.grid(row=0, column=1, sticky="nsew")
+        # FPara
+        lableTitlePara.grid(row=0, column=1, sticky="n")
+        btnSetEmplacement.grid(row=1, column=1)
+        btnBackAcceuilPara.grid(row=2, column=1, sticky="se")
 
     def start(self):
         # Affichage de frame main
@@ -83,4 +99,9 @@ class CTigerUI:
                                     "",
                                     "",
                                     "")
+
+    def __activePara(self):
+        self.__fPara.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
 
