@@ -1,5 +1,7 @@
 from librairy.arrera_tk import *
 from CArreraTiger import *
+import tkinter.filedialog as fd
+import tkinter.messagebox as mbox
 
 class CTigerUI:
     def __init__(self):
@@ -31,7 +33,9 @@ class CTigerUI:
         # FPara
         lableTitlePara = self.__arrTk.createLabel(self.__fPara, text="Parametre",
                                                   ppolice="Arial",ptaille=25,pstyle="bold")
-        btnSetEmplacement = self.__arrTk.createButton(self.__fPara, text="Emplacement de application Arrera")
+        btnSetEmplacement = self.__arrTk.createButton(self.__fPara,
+                                                      text="Emplacement de application Arrera",
+                                                      command=self.__setEmplacement)
         btnBackAcceuilPara = self.__arrTk.createButton(self.__fPara, text="Retour", command=self.__backMain)
         # fInstalled
         labelTitleInstalled = self.__arrTk.createLabel(self.__fInstalled, text="Application installer",
@@ -124,3 +128,16 @@ class CTigerUI:
         self.__btnInstall.configure(text="Application",command=self.__backMain)
         self.__fmain.grid_forget()
 
+    def __setEmplacement(self):
+        mbox.showinfo("Information",
+                      "Sélectionnez l'emplacement où vous souhaitez installer les logiciels Arrera Software.")
+        directory = fd.askdirectory()
+        while directory == "":
+            mbox.showerror("Erreur", "Veuillez sélectionner un emplacement valide.")
+            directory = fd.askdirectory()
+
+        sortieFolder = self.__objTiger.setEmplacementArreraSoft(directory)
+        if (sortieFolder == True):
+            mbox.showinfo("Information", "Emplacement enregistré.")
+        else:
+            mbox.showerror("Erreur", "Erreur lors de l'enregistrement de l'emplacement.")
