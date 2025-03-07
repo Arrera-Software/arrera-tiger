@@ -24,7 +24,7 @@ class CTigerUI:
         labelTitle = self.__arrTk.createLabel(fTop, text="Arrera store",
                                               ptaille=25,pstyle="bolt",
                                               ppolice="Arial")
-        self.__btnInstall = self.__arrTk.createButton(fTop, text="Application installer")
+        self.__btnInstall = self.__arrTk.createButton(fTop)
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres",command=self.__activePara)
         btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos", command=self.__apropos)
@@ -33,6 +33,9 @@ class CTigerUI:
                                                   ppolice="Arial",ptaille=25,pstyle="bold")
         btnSetEmplacement = self.__arrTk.createButton(self.__fPara, text="Emplacement de application Arrera")
         btnBackAcceuilPara = self.__arrTk.createButton(self.__fPara, text="Retour", command=self.__backMain)
+        # fInstalled
+        labelTitleInstalled = self.__arrTk.createLabel(self.__fInstalled, text="Application installer",
+                                                       ppolice="Arial",ptaille=25,pstyle="bold")
 
         # Configuration des colonnes et lignes
         # fmain
@@ -64,7 +67,13 @@ class CTigerUI:
         self.__fPara.grid_rowconfigure(0, weight=1)
         self.__fPara.grid_rowconfigure(1, weight=1)
         self.__fPara.grid_rowconfigure(2, weight=1)
-
+        # FInstalled
+        self.__fInstalled.grid_columnconfigure(0, weight=1)
+        self.__fInstalled.grid_columnconfigure(1, weight=10)
+        self.__fInstalled.grid_columnconfigure(2, weight=1)
+        self.__fInstalled.grid_rowconfigure(0, weight=1)
+        self.__fInstalled.grid_rowconfigure(1, weight=1)
+        self.__fInstalled.grid_rowconfigure(2, weight=1)
 
         # Affichage
         # Fmain
@@ -80,6 +89,8 @@ class CTigerUI:
         lableTitlePara.grid(row=0, column=1, sticky="n")
         btnSetEmplacement.grid(row=1, column=1)
         btnBackAcceuilPara.grid(row=2, column=1, sticky="se")
+        # fInstalled
+        labelTitleInstalled.grid(row=0, column=1, sticky="n")
 
     def start(self):
         # Affichage de frame main
@@ -91,6 +102,8 @@ class CTigerUI:
         self.__fPara.grid_forget()
         self.__fInstalled.grid_forget()
         self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__btnInstall.configure(text="Application installer"
+                                    ,command=self.__activeInstalled)
 
     def __apropos(self):
         self.__arrTk.aproposWindows("Arrera Store",
@@ -103,5 +116,11 @@ class CTigerUI:
     def __activePara(self):
         self.__fPara.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
+
+    def __activeInstalled(self):
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__btnInstall.configure(text="Application",command=self.__backMain)
         self.__fmain.grid_forget()
 
