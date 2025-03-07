@@ -14,6 +14,8 @@ class CTigerUI:
         # Ajout de differents frame
         fTop = self.__arrTk.createFrame(self.__rootWin)
         self.__fmain = self.__arrTk.createFrame(self.__rootWin)
+        self.__fPara = self.__arrTk.createFrame(self.__rootWin)
+        self.__fInstalled = self.__arrTk.createFrame(self.__rootWin)
         self.__fApp1 = self.__arrTk.createFrame(self.__fmain)
         self.__fApp2 = self.__arrTk.createFrame(self.__fmain)
 
@@ -25,7 +27,7 @@ class CTigerUI:
         self.__btnInstall = self.__arrTk.createButton(fTop, text="Application installer")
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres")
-        btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos")
+        btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos", command=self.__apropos)
 
         # Configuration des colonnes et lignes
         # fmain
@@ -52,7 +54,6 @@ class CTigerUI:
         fTop.grid_columnconfigure(2, weight=1)
 
 
-
         # Affichage
         # Fmain
         fTop.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
@@ -66,9 +67,20 @@ class CTigerUI:
 
     def start(self):
         # Affichage de frame main
-        self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
-
-
+        self.__backMain()
         # Affichage de la fenetre
         self.__arrTk.view()
+
+    def __backMain(self):
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+    def __apropos(self):
+        self.__arrTk.aproposWindows("Arrera Store",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "")
 
