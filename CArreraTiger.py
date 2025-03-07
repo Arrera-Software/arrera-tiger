@@ -41,7 +41,6 @@ class CArreraTiger :
             return False
         else :
             self.__emplacementSoft = emplacementSoft
-            print(emplacementSoft)
             self.__tigerFile.EcritureJSON("folder",self.__emplacementSoft)
             return True
 
