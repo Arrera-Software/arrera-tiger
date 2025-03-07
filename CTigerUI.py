@@ -2,6 +2,7 @@ from librairy.arrera_tk import *
 from CArreraTiger import *
 import tkinter.filedialog as fd
 import tkinter.messagebox as mbox
+import socket
 
 class CTigerUI:
     def __init__(self):
@@ -99,6 +100,21 @@ class CTigerUI:
     def start(self):
         # Affichage de frame main
         self.__backMain()
+        # teste si le pc est connecter a internet
+        internet = self.__testConnectInternet()
+        if (internet == False):
+            mbox.showerror("Erreur", "Pas de connexion internet")
+            self.__rootWin.quit()
+            return
+        # Chargement des depots
+        if (self.__objTiger.loadDepots("https://arrera-software.fr/depots.json") == False):
+            mbox.showerror("Erreur", "Erreur lors du chargement des dépôts")
+            self.__rootWin.quit()
+            return
+        # Chargement de l'emplacement
+        sortieFolder = self.__objTiger.loadEmplacementFile()
+        if (sortieFolder == False):
+            self.__setEmplacement()
         # Affichage de la fenetre
         self.__arrTk.view()
 
@@ -141,3 +157,12 @@ class CTigerUI:
             mbox.showinfo("Information", "Emplacement enregistré.")
         else:
             mbox.showerror("Erreur", "Erreur lors de l'enregistrement de l'emplacement.")
+
+    def __testConnectInternet(self):
+        try:
+            # Tente de se connecter au serveur
+            socket.setdefaulttimeout(3)
+            socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8",53))
+            return True
+        except socket.error:
+            return False
