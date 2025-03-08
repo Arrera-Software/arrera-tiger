@@ -19,8 +19,8 @@ class CTigerUI:
         self.__fmain = self.__arrTk.createFrame(self.__rootWin)
         self.__fPara = self.__arrTk.createFrame(self.__rootWin)
         self.__fInstalled = self.__arrTk.createFrame(self.__rootWin)
-        self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain, bg="red")
-        self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain,bg="blue")
+        self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
+        self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
 
         # Widgets
         # FTop
@@ -48,19 +48,6 @@ class CTigerUI:
         self.__fmain.grid_columnconfigure(1, weight=1)
         self.__fmain.grid_rowconfigure(0, weight=10)
         self.__fmain.grid_rowconfigure(1, weight=1)
-        # fApp
-        self.__fAppAssistant.grid_columnconfigure(0, weight=1)
-        self.__fAppAssistant.grid_columnconfigure(1, weight=1)
-        self.__fAppAssistant.grid_columnconfigure(2, weight=1)
-        self.__fAppAssistant.grid_rowconfigure(0, weight=1)
-        self.__fAppAssistant.grid_rowconfigure(1, weight=1)
-        self.__fAppAssistant.grid_rowconfigure(2, weight=1)
-        self.__fAppOtherApp.grid_columnconfigure(0, weight=1)
-        self.__fAppOtherApp.grid_columnconfigure(1, weight=1)
-        self.__fAppOtherApp.grid_columnconfigure(2, weight=1)
-        self.__fAppOtherApp.grid_rowconfigure(0, weight=1)
-        self.__fAppOtherApp.grid_rowconfigure(1, weight=1)
-        self.__fAppOtherApp.grid_rowconfigure(2, weight=1)
         # fTop
         fTop.grid_columnconfigure(0, weight=1)
         fTop.grid_columnconfigure(1, weight=1)
@@ -83,8 +70,6 @@ class CTigerUI:
         # Affichage
         # Fmain
         fTop.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        self.__fAppAssistant.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
-        self.__fAppOtherApp.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         btnPara.grid(row=1, column=1, sticky="se")
         btnApropos.grid(row=1, column=0, sticky="sw")
         # FTop
@@ -120,14 +105,32 @@ class CTigerUI:
         self.__arrTk.view()
 
     def __viewBTNApp(self):
+
+        del self.__fAppAssistant
+        del self.__fAppOtherApp
+
+        self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
+        self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
+
         listSoftAssistant = ["arrera-interface","six","arrera-copilote","ryley"]
         listSoft = self.__objTiger.getSoftAvailable()
 
+
+
         for i in range(len(listSoft)):
             if (listSoft[i] in listSoftAssistant):
-                self.__arrTk.createButton(self.__fAppAssistant, text=listSoft[i]).grid(row=i+1, column=0, sticky="nsew")
+                btn = self.__arrTk.createButton(self.__fAppAssistant, text=listSoft[i])
+                btn.grid(row=i, column=0, padx=5, pady=15, sticky="ew")
             else:
-                self.__arrTk.createButton(self.__fAppOtherApp, text=listSoft[i]).grid(row=i+1, column=0, sticky="nsew")
+                btn = self.__arrTk.createButton(self.__fAppOtherApp, text=listSoft[i])
+                btn.grid(row=i, column=0, padx=5, pady=15, sticky="ew")
+
+        # Configure the column inside each frame to stretch and center the buttons
+        self.__fAppAssistant.columnconfigure(0, weight=1)
+        self.__fAppOtherApp.columnconfigure(0, weight=1)
+
+        self.__fAppAssistant.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.__fAppOtherApp.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
 
     def __backMain(self):
