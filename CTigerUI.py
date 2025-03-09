@@ -242,7 +242,7 @@ class CTigerUI:
         self.__labelTitleAppInfo.configure(text=self.__formatTexte(soft))
         self.__labelIMGAppInfo.configure(image=self.__getImageSoft(soft),text="")
         if soft in listSoftInstalled:
-            self.__btnInstallUnistallAppInfo.configure(text="Désinstaller")
+            self.__btnInstallUnistallAppInfo.configure(text="Désinstaller",command=lambda : self.__viewUninstall(soft))
         else :
             self.__btnInstallUnistallAppInfo.configure(text="Installer",command=lambda : self.__viewInstall(soft))
 
@@ -302,6 +302,29 @@ class CTigerUI:
             self.__rootWin.after(100, self.__checkInstall)
         else:
             mbox.showinfo("Information", "Installation terminée")
+            del self.theardAction
+            self.theardAction = None
+            self.__backMain()
+
+    def __uninstallApp(self,soft):
+        self.theardAction = th.Thread(target=self.__objTiger.uninstall,args=(soft,))
+        self.theardAction.start()
+
+    def __viewUninstall(self,soft):
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
+        self.__fAppInfo.grid_forget()
+        self.__fInstall.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__labelLoad.configure(text=f"Désinstallation de {soft} en cours ...")
+        self.__uninstallApp(soft)
+        self.__rootWin.after(100, self.__checkUninstall())
+
+    def __checkUninstall(self):
+        if (self.theardAction.is_alive()):
+            self.__rootWin.after(100, self.__checkUninstall)
+        else:
+            mbox.showinfo("Information", "Désinstallation terminée")
             del self.theardAction
             self.theardAction = None
             self.__backMain()
