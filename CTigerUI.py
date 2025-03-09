@@ -67,6 +67,7 @@ class CTigerUI:
         self.__labelTitleAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
         self.__labelIMGAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
         self.__btnInstallUnistallAppInfo = self.__arrTk.createButton(self.__fAppInfo)
+        self.__btnMajAppInfo = self.__arrTk.createButton(self.__fAppInfo,text="Mettre à jour")
         self.__btnBackAppInfo = self.__arrTk.createButton(self.__fAppInfo, text="Retour", command=lambda : self.__backMain())
         # Configuration des colonnes et lignes
         # fmain
@@ -235,6 +236,7 @@ class CTigerUI:
 
     def __viewInfoApp(self,soft:str):
         listSoftInstalled = self.__objTiger.getSoftInstall()
+        listSoftUpdated = self.__objTiger.checkUpdate()
         self.__fAppInfo.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__fPara.grid_forget()
         self.__fInstalled.grid_forget()
@@ -245,6 +247,13 @@ class CTigerUI:
             self.__btnInstallUnistallAppInfo.configure(text="Désinstaller",command=lambda : self.__viewUninstall(soft))
         else :
             self.__btnInstallUnistallAppInfo.configure(text="Installer",command=lambda : self.__viewInstall(soft))
+
+        if (len(listSoftUpdated) !=0):
+            if soft in listSoftUpdated:
+                self.__btnMajAppInfo.configure(command=lambda : self.__viewMaj(soft))
+                self.__btnMajAppInfo.grid(row=2, column=0, sticky="n")
+            else :
+                self.__btnMajAppInfo.grid_forget()
 
 
     def __formatTexte(self,texte:str):
@@ -325,6 +334,29 @@ class CTigerUI:
             self.__rootWin.after(100, self.__checkUninstall)
         else:
             mbox.showinfo("Information", "Désinstallation terminée")
+            del self.theardAction
+            self.theardAction = None
+            self.__backMain()
+
+    def __majApp(self,soft):
+        self.theardAction = th.Thread(target=self.__objTiger.update,args=(soft,))
+        self.theardAction.start()
+
+    def __viewMaj(self,soft):
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
+        self.__fAppInfo.grid_forget()
+        self.__fInstall.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__labelLoad.configure(text=f"Mise a jour de {soft} en cours ...")
+        self.__majApp(soft)
+        self.__rootWin.after(100, self.__checkMaj)
+
+    def __checkMaj(self):
+        if (self.theardAction.is_alive()):
+            self.__rootWin.after(100, self.__checkMaj)
+        else:
+            mbox.showinfo("Information", "Mise a jour terminée")
             del self.theardAction
             self.theardAction = None
             self.__backMain()
