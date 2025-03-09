@@ -21,6 +21,7 @@ class CTigerUI:
         self.__fInstalled = self.__arrTk.createFrame(self.__rootWin)
         self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
         self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
+        self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin,bg="red")
 
         # Widgets
         # FTop
@@ -42,6 +43,16 @@ class CTigerUI:
         labelTitleInstalled = self.__arrTk.createLabel(self.__fInstalled, text="Application installer",
                                                        ppolice="Arial",ptaille=25,pstyle="bold")
 
+        # fAppAssistant
+        self.__listBTNAppAssistant = []
+        # fAppOtherApp
+        self.__listBTNAppOtherApp = []
+
+        #fAppInfo
+        self.__labelTitleAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
+        self.__labelIMGAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
+        self.__btnInstallUnistallAppInfo = self.__arrTk.createButton(self.__fAppInfo)
+        self.__btnBackAppInfo = self.__arrTk.createButton(self.__fAppInfo, text="Retour", command=lambda : self.__backMain())
         # Configuration des colonnes et lignes
         # fmain
         self.__fmain.grid_columnconfigure(0, weight=1)
@@ -66,6 +77,19 @@ class CTigerUI:
         self.__fInstalled.grid_rowconfigure(0, weight=1)
         self.__fInstalled.grid_rowconfigure(1, weight=1)
         self.__fInstalled.grid_rowconfigure(2, weight=1)
+        # fAppInfo
+        self.__fAppInfo.grid_columnconfigure(0, weight=1)
+        self.__fAppInfo.grid_columnconfigure(1, weight=1)
+        self.__fAppInfo.grid_columnconfigure(2, weight=1)
+        self.__fAppInfo.grid_rowconfigure(0, weight=1)
+        self.__fAppInfo.grid_rowconfigure(1, weight=1)
+        self.__fAppInfo.grid_rowconfigure(2, weight=1)
+        # fAppAssistant
+        self.__fAppAssistant.columnconfigure(0, weight=1)
+        # fAppOtherApp
+        self.__fAppOtherApp.columnconfigure(0, weight=1)
+
+
 
         # Affichage
         # Fmain
@@ -81,6 +105,15 @@ class CTigerUI:
         btnBackAcceuilPara.grid(row=2, column=1, sticky="se")
         # fInstalled
         labelTitleInstalled.grid(row=0, column=1, sticky="n")
+        # fAppInfo
+        self.__labelTitleAppInfo.grid(row=0, column=1, sticky="n")
+        self.__labelIMGAppInfo.grid(row=1, column=0)
+        self.__btnInstallUnistallAppInfo.grid(row=2, column=2, sticky="n")
+        self.__btnBackAppInfo.grid(row=2, column=2)
+        # fAppAssistant
+        self.__fAppAssistant.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        # fAppOtherApp
+        self.__fAppOtherApp.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
     def start(self):
         # Affichage de frame main
@@ -105,36 +138,32 @@ class CTigerUI:
         self.__arrTk.view()
 
     def __viewBTNApp(self):
-
-        del self.__fAppAssistant
-        del self.__fAppOtherApp
-
-        self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
-        self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
-
         listSoftAssistant = ["arrera-interface","six","arrera-copilote","ryley"]
         listSoft = self.__objTiger.getSoftAvailable()
 
-
-
         for i in range(len(listSoft)):
             if (listSoft[i] in listSoftAssistant):
-                btn = self.__arrTk.createButton(self.__fAppAssistant, text=listSoft[i])
-                btn.grid(row=i, column=0, padx=5, pady=15, sticky="ew")
+                self.__listBTNAppAssistant.append(self.__arrTk.createButton(
+                    self.__fAppAssistant,
+                    text=self.__formatTexte(listSoft[i]),
+                    command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
             else:
-                btn = self.__arrTk.createButton(self.__fAppOtherApp, text=listSoft[i])
-                btn.grid(row=i, column=0, padx=5, pady=15, sticky="ew")
+                self.__listBTNAppAssistant.append(self.__arrTk.createButton(
+                    self.__fAppOtherApp,
+                    text=self.__formatTexte(listSoft[i]),
+                    command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
 
-        # Configure the column inside each frame to stretch and center the buttons
-        self.__fAppAssistant.columnconfigure(0, weight=1)
-        self.__fAppOtherApp.columnconfigure(0, weight=1)
+        for i in range(len(self.__listBTNAppAssistant)):
+            self.__listBTNAppAssistant[i].grid(row=i, column=0, padx=5, pady=15, sticky="ew")
 
-        self.__fAppAssistant.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
-        self.__fAppOtherApp.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        for i in range(len(self.__listBTNAppOtherApp)):
+            self.__listBTNAppAssistant[i].grid(row=i, column=0, padx=5, pady=15, sticky="ew")
+
 
 
     def __backMain(self):
         self.__fPara.grid_forget()
+        self.__fAppInfo.grid_forget()
         self.__fInstalled.grid_forget()
         self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__btnInstall.configure(text="Application installer"
@@ -152,9 +181,11 @@ class CTigerUI:
         self.__fPara.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__fInstalled.grid_forget()
         self.__fmain.grid_forget()
+        self.__fAppInfo.grid_forget()
 
     def __activeInstalled(self):
         self.__fPara.grid_forget()
+        self.__fAppInfo.grid_forget()
         self.__fInstalled.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__btnInstall.configure(text="Application",command=self.__backMain)
         self.__fmain.grid_forget()
@@ -181,3 +212,23 @@ class CTigerUI:
             return True
         except socket.error:
             return False
+
+    def __viewInfoApp(self,soft:str):
+        self.__fAppInfo.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
+        self.__labelTitleAppInfo.configure(text=self.__formatTexte(soft))
+
+
+    def __formatTexte(self,texte:str):
+        texte = texte.replace("-"," ")
+        # Diviser le texte en mots en utilisant "split" sur les espaces
+        mots = texte.split(" ")
+
+        # Mettre la première lettre de chaque mot en majuscule
+        mots_maj = [mot.capitalize() for mot in mots]
+
+        # Combiner les mots en une phrase avec des espaces
+        texte_maj = " ".join(mots_maj)
+        return texte_maj
