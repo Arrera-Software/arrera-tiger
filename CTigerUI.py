@@ -12,6 +12,10 @@ class CTigerUI:
         self.__arrTk = CArreraTK()
         self.__objTiger = CArreraTiger("json/tigerConf.json")
         self.__theardAction = th.Thread()
+        # Initialisation des police
+        self.__police = "Arial"
+        self.__taille = 15
+        self.__style = "bold"
         # Emplacement de l'icon
         dectOS = OS()
         if (dectOS.osWindows()==True):
@@ -34,7 +38,7 @@ class CTigerUI:
         self.__fInstalled = self.__arrTk.createFrame(self.__rootWin)
         self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
         self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
-        self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin,bg="red")
+        self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin)
         self.__fInstall = self.__arrTk.createFrame(self.__rootWin)
         # Initilisation des icon
         imagePara = self.__arrTk.createImage(pathLight="img/settings.png",
@@ -58,16 +62,19 @@ class CTigerUI:
                                                width=35,height=35,image=imageapropos)
         # FPara
         lableTitlePara = self.__arrTk.createLabel(self.__fPara, text="Parametre",
-                                                  ppolice="Arial",ptaille=25,pstyle="bold")
+                                                  ppolice=self.__police,ptaille=25,pstyle=self.__style)
         btnSetEmplacement = self.__arrTk.createButton(self.__fPara,
                                                       text="Emplacement de application Arrera",
-                                                      command=self.__setEmplacement)
-        btnBackAcceuilPara = self.__arrTk.createButton(self.__fPara, text="Retour", command=self.__backMain)
+                                                      command=self.__setEmplacement
+                                                      ,ptaille=self.__taille,ppolice=self.__police,pstyle=self.__style)
+        btnBackAcceuilPara = self.__arrTk.createButton(self.__fPara, text="Retour", command=self.__backMain
+                                                       ,ptaille=self.__taille,ppolice=self.__police,pstyle=self.__style)
         # fInstalled
         labelTitleInstalled = self.__arrTk.createLabel(self.__fInstalled, text="Application installer",
                                                        ppolice="Arial",ptaille=25,pstyle="bold")
         # fInstall
-        self.__labelLoad = self.__arrTk.createLabel(self.__fInstall)
+        self.__labelLoad = self.__arrTk.createLabel(self.__fInstall
+                                                    ,ptaille=25,ppolice=self.__police,pstyle=self.__style)
 
         # fAppAssistant
         self.__listBTNAppAssistant = []
@@ -75,11 +82,15 @@ class CTigerUI:
         self.__listBTNAppOtherApp = []
 
         #fAppInfo
-        self.__labelTitleAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
+        self.__labelTitleAppInfo = self.__arrTk.createLabel(self.__fAppInfo
+                                                            ,ptaille=25,ppolice=self.__police,pstyle=self.__style)
         self.__labelIMGAppInfo = self.__arrTk.createLabel(self.__fAppInfo)
-        self.__btnInstallUnistallAppInfo = self.__arrTk.createButton(self.__fAppInfo)
-        self.__btnMajAppInfo = self.__arrTk.createButton(self.__fAppInfo,text="Mettre à jour")
-        self.__btnBackAppInfo = self.__arrTk.createButton(self.__fAppInfo, text="Retour", command=lambda : self.__backMain())
+        self.__btnInstallUnistallAppInfo = self.__arrTk.createButton(self.__fAppInfo
+                                                                     ,ptaille=self.__taille,ppolice=self.__police,pstyle=self.__style)
+        self.__btnMajAppInfo = self.__arrTk.createButton(self.__fAppInfo,text="Mettre à jour"
+                                                         ,ptaille=self.__taille,ppolice=self.__police,pstyle=self.__style)
+        self.__btnBackAppInfo = self.__arrTk.createButton(self.__fAppInfo, text="Retour", command=lambda : self.__backMain()
+                                                          ,ptaille=self.__taille,ppolice=self.__police,pstyle=self.__style)
         # Configuration des colonnes et lignes
         # fmain
         self.__fmain.grid_columnconfigure(0, weight=1)
@@ -177,13 +188,15 @@ class CTigerUI:
                 self.__listBTNAppAssistant.append(self.__arrTk.createButton(
                     self.__fAppAssistant,
                     text=self.__formatTexte(listSoft[i]),
-                    command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
+                    command= lambda software=listSoft[i]: self.__viewInfoApp(software),
+                    ppolice=self.__police,ptaille=self.__taille,pstyle=self.__style))
             else:
                 if listSoft[i] != "arrera-tiger":
                     self.__listBTNAppAssistant.append(self.__arrTk.createButton(
                         self.__fAppOtherApp,
                         text=self.__formatTexte(listSoft[i]),
-                        command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
+                        command= lambda software=listSoft[i]: self.__viewInfoApp(software),
+                        ppolice=self.__police,ptaille=self.__taille,pstyle=self.__style))
 
         for i in range(len(self.__listBTNAppAssistant)):
             self.__listBTNAppAssistant[i].grid(row=i, column=0, padx=5, pady=15, sticky="ew")
