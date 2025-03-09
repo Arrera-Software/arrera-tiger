@@ -158,10 +158,11 @@ class CTigerUI:
                     text=self.__formatTexte(listSoft[i]),
                     command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
             else:
-                self.__listBTNAppAssistant.append(self.__arrTk.createButton(
-                    self.__fAppOtherApp,
-                    text=self.__formatTexte(listSoft[i]),
-                    command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
+                if listSoft[i] != "arrera-tiger":
+                    self.__listBTNAppAssistant.append(self.__arrTk.createButton(
+                        self.__fAppOtherApp,
+                        text=self.__formatTexte(listSoft[i]),
+                        command= lambda software=listSoft[i]: self.__viewInfoApp(software)))
 
         for i in range(len(self.__listBTNAppAssistant)):
             self.__listBTNAppAssistant[i].grid(row=i, column=0, padx=5, pady=15, sticky="ew")
