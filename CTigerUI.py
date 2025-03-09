@@ -9,8 +9,16 @@ class CTigerUI:
         # Initialisation de la classe
         self.__arrTk = CArreraTK()
         self.__objTiger = CArreraTiger("json/tigerConf.json")
+        # Emplacement de l'icon
+        dectOS = OS()
+        if (dectOS.osWindows()==True):
+            iconWin = "img/arrera-tiger.ico"
+        else :
+            iconWin = "img/arrera-tiger.png"
         # Creation de la fenetre
-        self.__rootWin = self.__arrTk.aTK(width=800, height=600, title="Arrera Store", resizable=True)
+        self.__rootWin = self.__arrTk.aTK(width=800, height=600,
+                                          title="Arrera Store",
+                                          resizable=True, icon=iconWin)
         self.__rootWin.grid_rowconfigure(0, weight=1)
         self.__rootWin.grid_rowconfigure(1, weight=10)
         self.__rootWin.grid_columnconfigure(0, weight=1)
