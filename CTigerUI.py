@@ -36,6 +36,13 @@ class CTigerUI:
         self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
         self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin,bg="red")
         self.__fInstall = self.__arrTk.createFrame(self.__rootWin)
+        # Initilisation des icon
+        imagePara = self.__arrTk.createImage(pathLight="img/settings.png",
+                                             pathDark="img/settings.png",
+                                             tailleY=35,tailleX=35)
+        imageapropos = self.__arrTk.createImage(pathLight="img/apropos.png",
+                                             pathDark="img/apropos.png",
+                                             tailleY=35,tailleX=35)
         # Widgets
         # FTop
         labelTitle = self.__arrTk.createLabel(fTop, text="Arrera store",
@@ -43,8 +50,12 @@ class CTigerUI:
                                               ppolice="Arial")
         self.__btnInstall = self.__arrTk.createButton(fTop)
         # Fmain
-        btnPara = self.__arrTk.createButton(self.__fmain, text="Paramètres",command=self.__activePara)
-        btnApropos = self.__arrTk.createButton(self.__fmain, text="A Propos", command=self.__apropos)
+        btnPara = self.__arrTk.createButton(self.__fmain,command=self.__activePara,
+                                            bg="#e0e0e0", hoverbg="#949494",
+                                            width=35,height=35,image=imagePara)
+        btnApropos = self.__arrTk.createButton(self.__fmain, command=self.__apropos,
+                                               bg="#e0e0e0", hoverbg="#949494",
+                                               width=35,height=35,image=imageapropos)
         # FPara
         lableTitlePara = self.__arrTk.createLabel(self.__fPara, text="Parametre",
                                                   ppolice="Arial",ptaille=25,pstyle="bold")
@@ -107,6 +118,7 @@ class CTigerUI:
         # fInstall
         self.__fInstall.grid_rowconfigure(0, weight=1)
         self.__fInstall.grid_columnconfigure(0, weight=1)
+
 
         # Affichage
         # Fmain
@@ -192,11 +204,11 @@ class CTigerUI:
 
     def __apropos(self):
         self.__arrTk.aproposWindows("Arrera Store",
+                                    "img/arrera-tiger.png",
                                     "",
-                                    "",
-                                    "",
-                                    "",
-                                    "")
+                                    "Copyright Arrera Software by Baptiste P 2023-2025",
+                                    "https://github.com/Arrera-Software/arrera-tiger",
+                                    "https://arrera-software.fr/")
 
     def __activePara(self):
         self.__fPara.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
