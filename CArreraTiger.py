@@ -54,7 +54,7 @@ class CArreraTiger :
         softInstalled = self.getSoftInstall()
 
         if softInstalled[0] == "Aucun logiciel installé":
-            return
+            return []
         else :
             osLinux = self.__system.osLinux()
             osWindows = self.__system.osWindows()
@@ -68,7 +68,7 @@ class CArreraTiger :
                     if (osWindows == True):
                         directorySoft = self.__emplacementSoft+"/"+dictSoft[softInstalled[i]]["namefolderWin"]
                     else :
-                        return
+                        return []
 
                 if os.path.exists(directorySoft):
                     versionInstalled = ""
@@ -86,7 +86,7 @@ class CArreraTiger :
                         if (versionInstalled != versionOnline):
                             listOut.append(softInstalled[i])
                 else :
-                    return
+                    return []
 
             return  listOut
 
