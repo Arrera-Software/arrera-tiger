@@ -3,6 +3,7 @@ from CArreraTiger import *
 import tkinter.filedialog as fd
 import tkinter.messagebox as mbox
 import socket
+import shutil
 
 class CTigerUI:
     def __init__(self):
@@ -19,6 +20,8 @@ class CTigerUI:
         self.__rootWin = self.__arrTk.aTK(width=800, height=600,
                                           title="Arrera Store",
                                           resizable=True, icon=iconWin)
+        # Ajout de la fonction de fermeture
+        self.__rootWin.protocol("WM_DELETE_WINDOW",self.__closeTiger)
         self.__rootWin.grid_rowconfigure(0, weight=1)
         self.__rootWin.grid_rowconfigure(1, weight=10)
         self.__rootWin.grid_columnconfigure(0, weight=1)
@@ -30,7 +33,6 @@ class CTigerUI:
         self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
         self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
         self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin,bg="red")
-
         # Widgets
         # FTop
         labelTitle = self.__arrTk.createLabel(fTop, text="Arrera store",
@@ -227,16 +229,37 @@ class CTigerUI:
         self.__fInstalled.grid_forget()
         self.__fmain.grid_forget()
         self.__labelTitleAppInfo.configure(text=self.__formatTexte(soft))
+        self.__labelIMGAppInfo.configure(image=self.__getImageSoft(soft),text="")
 
 
     def __formatTexte(self,texte:str):
         texte = texte.replace("-"," ")
-        # Diviser le texte en mots en utilisant "split" sur les espaces
         mots = texte.split(" ")
-
-        # Mettre la première lettre de chaque mot en majuscule
         mots_maj = [mot.capitalize() for mot in mots]
-
-        # Combiner les mots en une phrase avec des espaces
         texte_maj = " ".join(mots_maj)
         return texte_maj
+
+    def __getImageSoft(self, nameSoft):
+        file_path = f"img/tmp/{nameSoft}.png"
+        url = self.__objTiger.getIMGSoft(nameSoft)
+        try:
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            response = requests.get(url, stream=True)
+            with open(file_path, "wb") as file:
+                for chunk in response.iter_content(1024):
+                    file.write(chunk)
+            return self.__arrTk.createImage(file_path,tailleX=250,tailleY=250)
+
+        except requests.exceptions.RequestException as e:
+            return self.__arrTk.createImage("img/arrera-tiger.png",tailleX=250,tailleY=250)
+
+    def __closeTiger(self):
+        self.__rootWin.quit()
+        self.__rootWin.destroy()
+        try:
+            if os.path.exists("img/tmp"):
+                shutil.rmtree("img/tmp")
+                return True
+            return False
+        except Exception as e:
+            return False
