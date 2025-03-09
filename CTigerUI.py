@@ -4,12 +4,14 @@ import tkinter.filedialog as fd
 import tkinter.messagebox as mbox
 import socket
 import shutil
+import threading as th
 
 class CTigerUI:
     def __init__(self):
         # Initialisation de la classe
         self.__arrTk = CArreraTK()
         self.__objTiger = CArreraTiger("json/tigerConf.json")
+        self.__theardAction = th.Thread()
         # Emplacement de l'icon
         dectOS = OS()
         if (dectOS.osWindows()==True):
@@ -33,6 +35,7 @@ class CTigerUI:
         self.__fAppAssistant = self.__arrTk.createFrame(self.__fmain)
         self.__fAppOtherApp = self.__arrTk.createFrame(self.__fmain)
         self.__fAppInfo = self.__arrTk.createFrame(self.__rootWin,bg="red")
+        self.__fInstall = self.__arrTk.createFrame(self.__rootWin)
         # Widgets
         # FTop
         labelTitle = self.__arrTk.createLabel(fTop, text="Arrera store",
@@ -52,6 +55,8 @@ class CTigerUI:
         # fInstalled
         labelTitleInstalled = self.__arrTk.createLabel(self.__fInstalled, text="Application installer",
                                                        ppolice="Arial",ptaille=25,pstyle="bold")
+        # fInstall
+        self.__labelLoad = self.__arrTk.createLabel(self.__fInstall)
 
         # fAppAssistant
         self.__listBTNAppAssistant = []
@@ -98,8 +103,9 @@ class CTigerUI:
         self.__fAppAssistant.columnconfigure(0, weight=1)
         # fAppOtherApp
         self.__fAppOtherApp.columnconfigure(0, weight=1)
-
-
+        # fInstall
+        self.__fInstall.grid_rowconfigure(0, weight=1)
+        self.__fInstall.grid_columnconfigure(0, weight=1)
 
         # Affichage
         # Fmain
@@ -124,6 +130,8 @@ class CTigerUI:
         self.__fAppAssistant.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
         # fAppOtherApp
         self.__fAppOtherApp.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        # fInstall
+        self.__labelLoad.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
     def start(self):
         # Affichage de frame main
@@ -176,6 +184,7 @@ class CTigerUI:
         self.__fPara.grid_forget()
         self.__fAppInfo.grid_forget()
         self.__fInstalled.grid_forget()
+        self.__fInstall.grid_forget()
         self.__fmain.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__btnInstall.configure(text="Application installer"
                                     ,command=self.__activeInstalled)
@@ -225,12 +234,17 @@ class CTigerUI:
             return False
 
     def __viewInfoApp(self,soft:str):
+        listSoftInstalled = self.__objTiger.getSoftInstall()
         self.__fAppInfo.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.__fPara.grid_forget()
         self.__fInstalled.grid_forget()
         self.__fmain.grid_forget()
         self.__labelTitleAppInfo.configure(text=self.__formatTexte(soft))
         self.__labelIMGAppInfo.configure(image=self.__getImageSoft(soft),text="")
+        if soft in listSoftInstalled:
+            self.__btnInstallUnistallAppInfo.configure(text="Désinstaller")
+        else :
+            self.__btnInstallUnistallAppInfo.configure(text="Installer",command=lambda : self.__viewInstall(soft))
 
 
     def __formatTexte(self,texte:str):
@@ -268,3 +282,26 @@ class CTigerUI:
             return False
         except Exception as e:
             return False
+
+    def __installApp(self,soft):
+        self.theardAction = th.Thread(target=self.__objTiger.install,args=(soft,))
+        self.theardAction.start()
+
+    def __viewInstall(self,soft):
+        self.__fPara.grid_forget()
+        self.__fInstalled.grid_forget()
+        self.__fmain.grid_forget()
+        self.__fAppInfo.grid_forget()
+        self.__fInstall.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        self.__labelLoad.configure(text=f"Installation de {soft} en cours ...")
+        self.__installApp(soft)
+        self.__rootWin.after(100, self.__checkInstall)
+
+    def __checkInstall(self):
+        if (self.theardAction.is_alive()):
+            self.__rootWin.after(100, self.__checkInstall)
+        else:
+            mbox.showinfo("Information", "Installation terminée")
+            del self.theardAction
+            self.theardAction = None
+            self.__backMain()
