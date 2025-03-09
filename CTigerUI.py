@@ -242,6 +242,10 @@ class CTigerUI:
     def __getImageSoft(self, nameSoft):
         file_path = f"img/tmp/{nameSoft}.png"
         url = self.__objTiger.getIMGSoft(nameSoft)
+
+        response = requests.get(url)
+        if response.status_code != 200:
+            return self.__arrTk.createImage("img/arrera-tiger.png",tailleX=250,tailleY=250)
         try:
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             response = requests.get(url, stream=True)
