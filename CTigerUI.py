@@ -138,7 +138,7 @@ class CTigerUI:
         btnApropos.grid(row=1, column=0, sticky="sw")
         # FTop
         labelTitle.grid(row=0, column=0, sticky="nw")
-        self.__btnInstall.grid(row=0, column=1, sticky="nsew")
+        #self.__btnInstall.grid(row=0, column=1, sticky="nsew")
         # FPara
         lableTitlePara.grid(row=0, column=1, sticky="n")
         btnSetEmplacement.grid(row=1, column=1)
