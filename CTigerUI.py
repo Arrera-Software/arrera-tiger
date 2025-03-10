@@ -57,6 +57,8 @@ class CTigerUI:
                                               ptaille=25,pstyle="bolt",
                                               ppolice="Arial")
         self.__btnInstall = self.__arrTk.createButton(fTop)
+        self.__btnMajTiger = self.__arrTk.createButton(fTop, text="Mettre a jour Arrera Store",
+                                                       ptaille=20,pstyle="bolt",ppolice="Arial")
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain,command=self.__activePara,
                                             bg="#e0e0e0", hoverbg="#949494",
@@ -180,6 +182,8 @@ class CTigerUI:
         if (sortieFolder == False):
             self.__setEmplacement()
         self.__viewBTNApp()
+        # Verification de mise a jour
+        self.__checkMajTiger()
         # Affichage de la fenetre
         self.__arrTk.view()
 
@@ -389,3 +393,9 @@ class CTigerUI:
             del self.theardAction
             self.theardAction = None
             self.__backMain()
+
+    def __checkMajTiger(self):
+        if (self.__demonTiger.checkUpdate()==True):
+            self.__btnMajTiger.grid(row=0, column=2, sticky="")
+            mbox.showinfo("Information",
+                          "Arrera Store a besoin de faire une mise a jour")
