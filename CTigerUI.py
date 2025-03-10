@@ -5,6 +5,7 @@ import tkinter.messagebox as mbox
 import socket
 import shutil
 import threading as th
+from demonTiger.CTigerDemon import *
 
 class CTigerUI:
     def __init__(self):
@@ -12,6 +13,9 @@ class CTigerUI:
         self.__arrTk = CArreraTK()
         self.__objTiger = CArreraTiger("json/tigerConf.json")
         self.__theardAction = th.Thread()
+        # Initilisation du demon tiger
+        self.__demonTiger = CTigerDemon("arrera-tiger",
+                                        "https://arrera-software.fr/depots.json")
         # Initialisation des police
         self.__police = "Arial"
         self.__taille = 15
@@ -218,7 +222,7 @@ class CTigerUI:
     def __apropos(self):
         self.__arrTk.aproposWindows("Arrera Store",
                                     "img/arrera-tiger.png",
-                                    "",
+                                    self.__demonTiger.getVersionSoft(),
                                     "Copyright Arrera Software by Baptiste P 2023-2025",
                                     "https://github.com/Arrera-Software/arrera-tiger",
                                     "https://arrera-software.fr/")
