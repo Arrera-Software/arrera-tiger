@@ -1,4 +1,5 @@
 from CTigerUI import*
+import PIL._tkinter_finder # NO SUPPR
 
 def main():
     tiger = CTigerUI()
