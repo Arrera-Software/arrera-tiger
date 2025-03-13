@@ -6,6 +6,7 @@ import socket
 import shutil
 import threading as th
 from demonTiger.CTigerDemon import *
+import webbrowser as wb
 
 class CTigerUI:
     def __init__(self):
@@ -58,7 +59,8 @@ class CTigerUI:
                                               ppolice="Arial")
         self.__btnInstall = self.__arrTk.createButton(fTop)
         self.__btnMajTiger = self.__arrTk.createButton(fTop, text="Mettre a jour Arrera Store",
-                                                       ptaille=20,pstyle="bolt",ppolice="Arial")
+                                                       ptaille=20,pstyle="bolt",ppolice="Arial",
+                                                       command=lambda : wb.open("https://github.com/Arrera-Software/arrera-tiger-updater/releases"))
         # Fmain
         btnPara = self.__arrTk.createButton(self.__fmain,command=self.__activePara,
                                             bg="#e0e0e0", hoverbg="#949494",
