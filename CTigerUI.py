@@ -193,6 +193,11 @@ class CTigerUI:
         listSoftAssistant = ["arrera-interface","six","arrera-copilote","ryley"]
         listSoft = self.__objTiger.getSoftAvailable()
 
+        if (listSoft[0] == "error"):
+            mbox.showerror("non supportée.", "Aucune application d'Arrera n'est supportée sur votre plateforme.")
+            self.__rootWin.destroy()
+            return
+
         for i in range(len(listSoft)):
             if (listSoft[i] in listSoftAssistant):
                 self.__listBTNAppAssistant.append(self.__arrTk.createButton(
@@ -200,13 +205,12 @@ class CTigerUI:
                     text=self.__formatTexte(listSoft[i]),
                     command= lambda software=listSoft[i]: self.__viewInfoApp(software),
                     ppolice=self.__police,ptaille=self.__taille,pstyle=self.__style))
-            else:
-                if listSoft[i] != "arrera-tiger":
-                    self.__listBTNAppAssistant.append(self.__arrTk.createButton(
-                        self.__fAppOtherApp,
-                        text=self.__formatTexte(listSoft[i]),
-                        command= lambda software=listSoft[i]: self.__viewInfoApp(software),
-                        ppolice=self.__police,ptaille=self.__taille,pstyle=self.__style))
+            elif listSoft[i] != "arrera-tiger":
+                self.__listBTNAppAssistant.append(self.__arrTk.createButton(
+                    self.__fAppOtherApp,
+                    text=self.__formatTexte(listSoft[i]),
+                    command= lambda software=listSoft[i]: self.__viewInfoApp(software),
+                    ppolice=self.__police,ptaille=self.__taille,pstyle=self.__style))
 
         for i in range(len(self.__listBTNAppAssistant)):
             self.__listBTNAppAssistant[i].grid(row=i, column=0, padx=5, pady=15, sticky="ew")
